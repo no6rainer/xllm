@@ -31,7 +31,7 @@ limitations under the License.
 #include "xllm_kernels/core/include/atb_speed/base/model.h"
 #include "xllm_kernels/core/include/atb_speed/log.h"
 #include "xllm_kernels/core/include/atb_speed/utils/model_factory.h"
-#include "xllm_kernels/models/qwen3/layer/moe_decoder_layer.h"
+#include "xllm_kernels/models/llada/layer/moe_decoder_layer.h"
 
 namespace xllm {
 namespace layer {
@@ -73,33 +73,33 @@ class NpuLLaDAMoeDecoderLayerImpl : public NpuBaseLayer {
 
   void initialize_weight_tensors(const torch::TensorOptions& options);
 
-  void param_from_args(atb_speed::qwen::MoeDecoderLayerParam& param,
+  void param_from_args(atb_speed::llada::MoeDecoderLayerParam& param,
                        const ModelArgs& args,
                        const ParallelArgs& parallel_args,
                        bool is_prefill);
 
   void resize_experts_weights(int num_of_device_experts);
 
-  void initialize_basic_parameters(atb_speed::qwen::MoeDecoderLayerParam& param,
+  void initialize_basic_parameters(atb_speed::llada::MoeDecoderLayerParam& param,
                                    const ModelArgs& args,
                                    const ParallelArgs& parallel_args,
                                    bool is_prefill);
 
   void initialize_attention_parameters(
-      atb_speed::qwen::MoeDecoderLayerParam& param,
+      atb_speed::llada::MoeDecoderLayerParam& param,
       const ModelArgs& args,
       const ParallelArgs& parallel_args);
 
-  void initialize_mlp_parameters(atb_speed::qwen::MoeDecoderLayerParam& param,
+  void initialize_mlp_parameters(atb_speed::llada::MoeDecoderLayerParam& param,
                                  const ModelArgs& args,
                                  const ParallelArgs& parallel_args);
 
   void initialize_parallel_parameters(
-      atb_speed::qwen::MoeDecoderLayerParam& param,
+      atb_speed::llada::MoeDecoderLayerParam& param,
       const ParallelArgs& parallel_args);
 
   void initialize_quantization_parameters(
-      atb_speed::qwen::MoeDecoderLayerParam& param);
+      atb_speed::llada::MoeDecoderLayerParam& param);
 
   torch::Tensor get_sharded_tensor(const StateDict& state_dict,
                                    const std::string& name,
@@ -164,7 +164,7 @@ class NpuLLaDAMoeDecoderLayerImpl : public NpuBaseLayer {
                                       bool transpose = false);
 
   int64_t init_node(atb_speed::Model::Node& node,
-                    atb_speed::qwen::MoeDecoderLayerParam& param);
+                    atb_speed::llada::MoeDecoderLayerParam& param);
 
   void build_node_variant_pack(atb_speed::Model::Node& node,
                                torch::Tensor& x,
@@ -198,8 +198,8 @@ class NpuLLaDAMoeDecoderLayerImpl : public NpuBaseLayer {
   int32_t dp_local_tp_rank_;
 
   int32_t num_speculative_tokens_ = 0;
-  atb_speed::qwen::MoeDecoderLayerParam prefill_param_;
-  atb_speed::qwen::MoeDecoderLayerParam decode_param_;
+  atb_speed::llada::MoeDecoderLayerParam prefill_param_;
+  atb_speed::llada::MoeDecoderLayerParam decode_param_;
 
   atb_speed::Model::Node prefill_node_;
   atb_speed::Model::Node decode_node_;

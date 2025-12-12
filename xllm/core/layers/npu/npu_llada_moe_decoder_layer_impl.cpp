@@ -182,7 +182,7 @@ void NpuLLaDAMoeDecoderLayerImpl::initialize_tensors(
 }
 
 void NpuLLaDAMoeDecoderLayerImpl::param_from_args(
-    atb_speed::qwen::MoeDecoderLayerParam& param,
+    atb_speed::llada::MoeDecoderLayerParam& param,
     const ModelArgs& args,
     const ParallelArgs& parallel_args,
     bool is_prefill) {
@@ -211,7 +211,7 @@ void NpuLLaDAMoeDecoderLayerImpl::initialize_weight_tensors(
 }
 
 void NpuLLaDAMoeDecoderLayerImpl::initialize_basic_parameters(
-    atb_speed::qwen::MoeDecoderLayerParam& param,
+    atb_speed::llada::MoeDecoderLayerParam& param,
     const ModelArgs& args,
     const ParallelArgs& parallel_args,
     bool is_prefill) {
@@ -256,7 +256,7 @@ void NpuLLaDAMoeDecoderLayerImpl::initialize_basic_parameters(
 }
 
 void NpuLLaDAMoeDecoderLayerImpl::initialize_attention_parameters(
-    atb_speed::qwen::MoeDecoderLayerParam& param,
+    atb_speed::llada::MoeDecoderLayerParam& param,
     const ModelArgs& args,
     const ParallelArgs& parallel_args) {
   param.enableFA3 = false;           // TODO
@@ -264,7 +264,7 @@ void NpuLLaDAMoeDecoderLayerImpl::initialize_attention_parameters(
 }
 
 void NpuLLaDAMoeDecoderLayerImpl::initialize_mlp_parameters(
-    atb_speed::qwen::MoeDecoderLayerParam& param,
+    atb_speed::llada::MoeDecoderLayerParam& param,
     const ModelArgs& args,
     const ParallelArgs& parallel_args) {
   param.hasSharedExpert = (args.n_shared_experts() > 0);
@@ -286,7 +286,7 @@ void NpuLLaDAMoeDecoderLayerImpl::initialize_mlp_parameters(
 }
 
 void NpuLLaDAMoeDecoderLayerImpl::initialize_parallel_parameters(
-    atb_speed::qwen::MoeDecoderLayerParam& param,
+    atb_speed::llada::MoeDecoderLayerParam& param,
     const ParallelArgs& parallel_args) {
   param.lmHeadLocalTp = dp_local_tp_size_;
   param.mapping = parallel_args.mapping();
@@ -301,7 +301,7 @@ void NpuLLaDAMoeDecoderLayerImpl::initialize_parallel_parameters(
 }
 
 void NpuLLaDAMoeDecoderLayerImpl::initialize_quantization_parameters(
-    atb_speed::qwen::MoeDecoderLayerParam& param) {
+    atb_speed::llada::MoeDecoderLayerParam& param) {
   param.packQuantType = {static_cast<int>(PackType::ALL_FP),
                          static_cast<int>(PackType::ALL_FP)};
   param.attnLinearQuantType = {static_cast<int>(LinearType::FP),
@@ -575,9 +575,9 @@ int64_t NpuLLaDAMoeDecoderLayerImpl::init_layer() {
 
 int64_t NpuLLaDAMoeDecoderLayerImpl::init_node(
     atb_speed::Model::Node& node,
-    atb_speed::qwen::MoeDecoderLayerParam& param) {
+    atb_speed::llada::MoeDecoderLayerParam& param) {
   atb::Operation* operation = nullptr;
-  atb_speed::qwen::MoeDecoderLayer(param, &operation);
+  atb_speed::llada::MoeDecoderLayer(param, &operation);
   node.operation.reset(operation);
   if (node.operation == nullptr) {
     LOG(ERROR) << "node.operation is null";
